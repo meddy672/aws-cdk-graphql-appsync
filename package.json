@@ -25,6 +25,8 @@
     "@aws-cdk/aws-dynamodb": "^1.130.0",
     "@aws-cdk/aws-lambda": "^1.130.0",
     "@aws-cdk/core": "1.130.0",
+    "@graphql-codegen/cli": "^2.3.0",
+    "@graphql-codegen/typescript": "^2.4.1",
     "@types/aws-lambda": "^8.10.87",
     "aws-sdk": "^2.1046.0",
     "source-map-support": "^0.5.16"
