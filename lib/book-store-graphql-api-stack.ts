@@ -31,7 +31,7 @@ export class BookStoreGraphqlApiStack extends cdk.Stack {
       billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
     })
 
-    const listBooksHandler = new lambda.Function(this, 'BookStoreGraphqlApiHandler', {
+    const listBooksHandler = new lambda.Function(this, 'listBooksHandler', {
       code: lambda.Code.fromAsset('functions'),
       runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'listBooks.handler',
@@ -49,5 +49,22 @@ export class BookStoreGraphqlApiStack extends cdk.Stack {
       fieldName: "listBooks"
     });
 
+    const createBookHandler = new lambda.Function(this, 'createBookHandler', {
+      code: lambda.Code.fromAsset('functions'),
+      runtime: lambda.Runtime.NODEJS_14_X,
+      handler: 'createBook.handler',
+      environment: {
+        BOOKS_TABLE: booksTable.tableName,
+      }
+    });
+
+    booksTable.grantReadWriteData(createBookHandler);
+
+    const createBookDataSource = api.addLambdaDataSource("createBookDataSource", createBookHandler);
+
+    createBookDataSource.createResolver({
+      typeName: "Mutation",
+      fieldName: "createBook"
+    });
   }
 }

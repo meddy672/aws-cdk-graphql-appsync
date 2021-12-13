@@ -4,8 +4,17 @@ type Book {
   completed: Boolean
   rating: Int
   reviews: [String]
-  }
+}
 
 type Query {
   listBooks: [Book]
+}
+
+type Mutation {
+  createBook(book: BookInput!): Book
+}
+
+input BookInput {
+  id: ID!
+  title: String!
 }
