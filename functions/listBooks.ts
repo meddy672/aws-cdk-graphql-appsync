@@ -1,13 +1,7 @@
 import { AppSyncResolverHandler } from 'aws-lambda';
 import { DynamoDB } from 'aws-sdk';
+import { Book } from '../types/books';
 
-type Book = {
-    id: string;
-    title: string;
-    completed?: string;
-    rating?: string;
-    reviews?: string[];
-};
 
 const docClient = new DynamoDB.DocumentClient()
 export const handler: AppSyncResolverHandler<null, Book[] | null> = async () => {
