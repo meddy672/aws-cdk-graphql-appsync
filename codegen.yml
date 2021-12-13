@@ -1,8 +1,8 @@
 overwrite: true
 schema:
-  - graphql/schmea.graphql
+  - graphql/schema.graphql
 
 generates:
-  types/books/d/ts:
+  types/books.d.ts:
     plugins:
       - typescript
