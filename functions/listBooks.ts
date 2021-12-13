@@ -16,8 +16,8 @@ export const handler: AppSyncResolverHandler<null, Book[] | null> = async () => 
         }).promise();
 
         return data.Items as Book[];
-    } catch (err: any) {
-        console.error("Database error occured", err.message);
+    } catch (err) {
+        console.error("Database error occured", err);
         return null;
      }
 }

@@ -19,10 +19,10 @@ export const handler: AppSyncResolverHandler<MutationCreateBookArgs, Book | null
         }).promise();
 
         console.log(book);
-        
+
         return book;
-    } catch (err: any) {
-        console.error("Database error occured", err.message);
+    } catch (err) {
+        console.error("Database error occured", err);
         return null;
      }
 }
