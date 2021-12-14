@@ -9,7 +9,20 @@ This is a Graphql API built with AWS AppSync, DynamoDB and Lambda. The applicati
 
 
 ## Getting Started
-Download or clone the repository and run npm init. This will install the needed depencies on your machine. The **lib** directory constains the stack and its constructs and the lambda function are stored within the **functions** directory. The `cdk.json` file tells the CDK Toolkit how to execute your app.
+Download or clone the repository and run npm init. This will install the needed depencies on your machine. The **lib** directory constains the stack and its constructs.
+```
+export class BookStoreGraphqlApiStack extends cdk.Stack {
+  constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
+    super(scope, id, props);
+
+    // Constructs
+  })
+}
+
+```
+
+
+The lambda function are stored within the **functions** directory. The `cdk.json` file tells the CDK Toolkit how to execute your app.
 
 ## Useful commands
 
