@@ -1,6 +1,6 @@
 import { AppSyncResolverHandler } from 'aws-lambda';
 import { DynamoDB } from 'aws-sdk';
-import { Book, MutationCreateBookArgs } from '../types/books';
+import { Book, MutationCreateBookArgs } from '../../types/books';
 
 const docClient = new DynamoDB.DocumentClient();
 

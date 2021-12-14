@@ -32,7 +32,7 @@ export class BookStoreGraphqlApiStack extends cdk.Stack {
     })
 
     const listBooksHandler = new lambda.Function(this, 'listBooksHandler', {
-      code: lambda.Code.fromAsset('functions'),
+      code: lambda.Code.fromAsset('functions/listBooks'),
       runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'listBooks.handler',
       memorySize: 1024,
@@ -51,7 +51,7 @@ export class BookStoreGraphqlApiStack extends cdk.Stack {
     });
 
     const createBookHandler = new lambda.Function(this, 'createBookHandler', {
-      code: lambda.Code.fromAsset('functions'),
+      code: lambda.Code.fromAsset('functions/createBook'),
       runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'createBook.handler',
       environment: {
@@ -66,6 +66,25 @@ export class BookStoreGraphqlApiStack extends cdk.Stack {
     createBookDataSource.createResolver({
       typeName: "Mutation",
       fieldName: "createBook"
+    });
+
+    const getBookByIdLambda = new lambda.Function(this, 'getBookByIdLambda', {
+      code: lambda.Code.fromAsset('functions/GetBookById'),
+      runtime: lambda.Runtime.NODEJS_14_X,
+      handler: 'getBookById.handler',
+      memorySize: 1024,
+      environment: {
+        BOOKS_TABLE: booksTable.tableName,
+      }
+    });
+
+    booksTable.grantReadData(getBookByIdLambda);
+
+    const getBookByIdDataSource = api.addLambdaDataSource("getBookByIdDataSource", getBookByIdLambda);
+
+    getBookByIdDataSource.createResolver({
+      typeName: "Query",
+      fieldName: "getBookById"
     });
   }
 }
