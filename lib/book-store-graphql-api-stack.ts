@@ -20,6 +20,9 @@ export class BookStoreGraphqlApiStack extends cdk.Stack {
           }
         }
       },
+      logConfig: {
+        fieldLogLevel: appsync.FieldLogLevel.ALL
+      },
       xrayEnabled: true
     });
 
@@ -29,7 +32,7 @@ export class BookStoreGraphqlApiStack extends cdk.Stack {
         type: dynamodb.AttributeType.STRING
       },
       billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
-    })
+    });
 
     const listBooksHandler = new lambda.Function(this, 'listBooksHandler', {
       code: lambda.Code.fromAsset('functions/listBooks'),
