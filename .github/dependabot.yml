@@ -1,11 +1,30 @@
-# To get started with Dependabot version updates, you'll need to specify which
-# package ecosystems to update and where the package manifests are located.
-# Please see the documentation for all configuration options:
-# https://docs.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
+# # To get started with Dependabot version updates, you'll need to specify which
+# # package ecosystems to update and where the package manifests are located.
+# # Please see the documentation for all configuration options:
+# # https://docs.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
 
-version: 2
-updates:
-  - package-ecosystem: "" # See documentation for possible values
-    directory: "/" # Location of package manifests
-    schedule:
-      interval: "daily"
+# version: 2
+# updates:
+#   - package-ecosystem: "" # See documentation for possible values
+#     directory: "/" # Location of package manifests
+#     schedule:
+#       interval: "daily"
+name: Add comment to successful Dependabot PRs
+
+on:
+  workflow_run:
+    workflows: ["My workflow name"]
+    types:
+      - completed
+
+jobs:
+  add-dependabot-comment:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      # ... some steps before
+      - name: Add merge comment for dependabot PRs
+        uses: jo-sm/at-dependabot-merge@v1.1
+        with:
+          run-id: ${{ github.event.workflow_run.id }}
+          token: ${{ secrets.DEPENDABOT_SECRET }}
