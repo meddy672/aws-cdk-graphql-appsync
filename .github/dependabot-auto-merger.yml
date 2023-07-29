@@ -1,19 +1,27 @@
-name: Add comment to successful Dependabot PRs
+name: "Dependabot Automerge - Action"
 
 on:
-  workflow_run:
-    workflows: ["My workflow name"]
-    types:
-      - completed
+  pull_request:
 
 jobs:
-  add-dependabot-comment:
+  worker:
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.conclusion == 'success' }}
+
+    if: github.actor == 'dependabot[bot]'
     steps:
-      # ... some steps before
-      - name: Add merge comment for dependabot PRs
-        uses: jo-sm/at-dependabot-merge@v1.1
+      - name: automerge
+        uses: actions/github-script@0.2.0
         with:
-          run-id: ${{ github.event.workflow_run.id }}
-          token: ${{ secrets.DEPENDABOT_SECRET }}
+          script: |
+            github.pullRequests.createReview({
+              owner: context.payload.repository.owner.login,
+              repo: context.payload.repository.name,
+              pull_number: context.payload.pull_request.number,
+              event: 'APPROVE'
+            })
+            github.pullRequests.merge({
+              owner: context.payload.repository.owner.login,
+              repo: context.payload.repository.name,
+              pull_number: context.payload.pull_request.number
+            })
+          github-token: ${{github.token}}
