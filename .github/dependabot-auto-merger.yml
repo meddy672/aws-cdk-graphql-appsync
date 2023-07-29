@@ -1,9 +1,19 @@
-version: 1
-auto-merge-settings:
-    merge_level: "minor"
-    merge_strategy: "squash"
-    skip_ci: true
-    delete_branch: true
-    commit_title: Auto-merge dependabot PR
-    commit_message: Auto-merge dependabot PR by @dependabot-auto-merge
-    skip_check_runs: false
+name: Add comment to successful Dependabot PRs
+
+on:
+  workflow_run:
+    workflows: ["My workflow name"]
+    types:
+      - completed
+
+jobs:
+  add-dependabot-comment:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      # ... some steps before
+      - name: Add merge comment for dependabot PRs
+        uses: jo-sm/at-dependabot-merge@v1.1
+        with:
+          run-id: ${{ github.event.workflow_run.id }}
+          token: ${{ secrets.DEPENDABOT_SECRET }}
